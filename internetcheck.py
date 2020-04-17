@@ -14,8 +14,7 @@ def connection():
     return False    
 
 status = connection()
-location = "/home/work/Desktop/testfile"
-string = "option rebind_protection '0'"
+location = "/etc/config/dhcp"
 
 while status == False:
     time.sleep(5)
