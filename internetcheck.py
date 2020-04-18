@@ -23,7 +23,7 @@ while status == False:
 with open(location, "r") as file:
     lines = file.readlines()
     
-lines[5] = "\t\toption rebind_protection '1'\n"
+lines[5] = "\toption rebind_protection '1'\n"
 
 with open (location, "w") as file:
     file.writelines(lines)
