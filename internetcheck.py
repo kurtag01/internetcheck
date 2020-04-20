@@ -1,46 +1,30 @@
-#!/bin/python3
-import socket
+#!/usr/bin/python3
+import urllib.request
 import time
 import fileinput
 
+location = "/etc/config/dhcp"
 
+#Loop through the dhcp file and turn off rebind protection:
+with fileinput.FileInput(location, inplace=True, backup='.bak')as file:
+    for line in file:
+        print(line.replace("option rebind_protection '1'", "option rebind_protection '0'"), end='')
+
+#function to check internet connectivity
 def connection():
     try:
-        s = socket.create_connection(("1.1.1.1", 80), 2)
-        s.close()
+        urllib.request.urlopen('http://google.com')
         return True
     except:
-        pass
-    return False    
+        return False
 
 status = connection()
-location1 = "/etc/config/dhcp"
-location2 = "/etc/config/wireless"
-newline = "\toption disabled '1'\n\toption dns '209.222.18.218 209.222.18.222'"
-
-time.sleep(2)
-
-with open(location1, "r") as file:
-    content = file.readlines()
-    
-content[5] = "\toption rebind_protection '0'\n"
-
-with open(location1, "w") as file"
-    file.writelines(content)
-    
-with open (location2, "a") as file2:
-    file2.writelines(newline)
 
 while status == False:
     time.sleep(5)
-    status = connection()
+    status = connection()    
     
-with open(location1, "r") as file:
-    lines = file.readlines()
-    
-lines[5] = "\toption rebind_protection '1'\n"
-
-with open (location1, "w") as file:
-    file.writelines(lines)
-
-
+if status == True:    
+    with fileinput.FileInput(location, inplace=True, backup='.bak')as file:
+        for line in file:
+            print(line.replace("option rebind_protection '0'", "option rebind_protection '1'"), end='')
